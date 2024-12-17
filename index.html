@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Assistant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin-top: 50px;
+        }
+        h1 {
+            color: #333;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            margin: 20px;
+            cursor: pointer;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #response {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Voice Assistant</h1>
+    <button onclick="sendCommand()">Send Voice Command</button>
+    <div id="response"></div>
+
+    <script>
+        function sendCommand() {
+            const command = prompt("Enter your command:");
+            if (command) {
+                fetch('/run', {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ command: command })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("response").innerText = "Response: " + data.response;
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    document.getElementById("response").innerText = "An error occurred.";
+                });
+            }
+        }
+    </script>
+</body>
+</html>
